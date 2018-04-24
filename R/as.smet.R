@@ -56,10 +56,18 @@ NULL
 #' 
 #' # In case of multiple station, it return a list of SMET-class objects: 
 #' 
+#' ## This opton works for more than one station, 
+#' #in case of one station this works too only if it is FORCED!
+#' 
 #' sm_multi <- as.smet(meteofrance,variables=variables)
 #' 
 #' 
-#'   
+#' onestation <- meteofrance[meteofrance$station_id=="07499",]
+#' sm_o <- as.smet(onestation,variables=variables,force.multistation=TRUE)
+
+#' 
+#' 
+#'  
 #' 
 #' 
 
@@ -256,14 +264,14 @@ setMethod("as.smet","data.frame",function(object,mult=NA,offset=NA,date.field="t
    
   ##### NOT CORRECT!!! 
    
-   if (!is.na(mult)) {
+   if (!is.na(mult[1])) {
 	   
 	#   out@data[,names(mult)]  <- t(apply(X= out@data[,names(mult)],FUN=function(x,mult) {x/mult},mult=mult,MARGIN=1))
 	   
-	   out@header$units_multpier[names(mult)] <- mult
+	   out@header$units_multiplier[names(mult)] <- mult
    }  
    
-   if (!is.na(offset)) {
+   if (!is.na(offset[1])) {
 	   
 	 #  out@data[,names(offset)]  <- t(apply(X= out@data[,names(offset)],FUN=function(x,mult) {x-offset},offset=offset,MARGIN=1))
 	   
@@ -386,6 +394,10 @@ NULL
 	
 	
 	setMethod("as.smet","smet",function(object,...) { 
+				
+				
+				
+				## add fields here 
 				
 				
 				args <- base::list(...)
